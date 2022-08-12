@@ -25,7 +25,8 @@ An Interface for running simple sql queries without an IDE
     "password": "",\
     "query_file": ""\
 }
-
+* query_file should be the filepath for the .sql file you would like to run.
+* 
 ## Notes
 
 
