@@ -26,9 +26,12 @@ An Interface for running simple sql queries without an IDE
     "query_file": ""\
 }
 * query_file should be the filepath for the .sql file you would like to run.
+* Run the program either with an .exe created with PyInstaller or by running LDliteSingleSelect.bat
+* Verify that the file path shown in the text field is correct and Select 'Run Query'
 * 
 ## Notes
-
+* It is recommended that you use PyInstaller to generate an executable version of LDliteSingleSelect.py to run instead 
+of running it through LDliteSingleSelect.bat
 
 ## Contributors
 

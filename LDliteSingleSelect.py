@@ -18,6 +18,7 @@ class Querier:
         user = config["user"]
         host = config["host"]
         password = config["password"]
+        port = config["port"]
         self.query_name = config["query_file"]
 
         try:
@@ -30,7 +31,7 @@ class Querier:
             raise FileNotFoundError(f"Query File:\n{self.query_name}\nnot found")
 
         try:
-            self.connection = postgres.connect(f"dbname={dbname} user={user} password={password} host={host}")
+            self.connection = postgres.connect(f"dbname={dbname} user={user} password={password} host={host} port={port}")
             self.cursor = self.connection.cursor()
         except Exception as e:
             raise e
