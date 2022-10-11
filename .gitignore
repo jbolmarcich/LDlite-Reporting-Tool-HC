@@ -1,6 +1,9 @@
 config.json
 ASC_config.json
-Instances_w_asc_and_non-asc_hol.sql
-SOA_report.csv
-SOA_report.sql
 .idea
+*.sql
+Output_Files
+LDlite-Single-Select.code-workspace
+SOA-report.exe
+Queries
+Configurations

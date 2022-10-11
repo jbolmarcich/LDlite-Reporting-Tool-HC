@@ -2,7 +2,7 @@
 
 # FOLIO Voucher Export
 
-An Interface for running simple sql queries without an IDE
+An Interface for running simple sql queries without a SQL IDE
 
 ## Requirements
 
@@ -12,6 +12,7 @@ An Interface for running simple sql queries without an IDE
 * tkinter
 * sys
 * psycopg2
+* os
 
 
 
