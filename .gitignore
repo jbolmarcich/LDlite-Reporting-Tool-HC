@@ -1,9 +1,6 @@
 config.json
-ASC_config.json
 .idea
 *.sql
 Output_Files
 LDlite-Single-Select.code-workspace
-SOA-report.exe
 Queries
-Configurations
