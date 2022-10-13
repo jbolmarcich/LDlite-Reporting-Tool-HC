@@ -56,6 +56,9 @@ of running it through LDliteSingleSelect.bat
     * Full Release
     * Removed **query_file** parameter from the config file in favor of checking for query options in the folder specified by **query_filepath** simplifying the process of adding new queries and removing the need for additional config files.
     * Added **output_filepath** parameter to config
+* 1.1
+    * Added option to enable a simple logging function
+    * Config file now contains two new fields **generate_log,** (Boolean) and **log_file_output_filepath** (String)
     
 ## Known Issues
 * 
