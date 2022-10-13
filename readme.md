@@ -1,5 +1,3 @@
-# This Document is SIGNIFICANTLY out of date
-
 # FOLIO Voucher Export
 
 An Interface for running simple sql queries without a SQL IDE
@@ -14,25 +12,32 @@ An Interface for running simple sql queries without a SQL IDE
 * psycopg2
 * os
 
-
+## Optional Requirements
+* pyinstaller
+  
 
 ## Instructions
 
 * Create json config file in the following format:
 >{\
-        "dbname": "",\
-    "user": "",\
-    "host": "",\
-    "password": "",\
-    "query_file": ""\
+    "dbname": " ",\
+    "user": " ",\
+    "host": " ",\
+    "password": " ",\
+    "query_filepath" : " ",\
+    "output_filepath" : " "\
 }
-* query_file should be the filepath for the .sql file you would like to run.
+* **query_filepath** and **output_filepath** should point to existing folders that you have read/write permissons for.
 * Run the program either with an .exe created with PyInstaller or by running LDliteSingleSelect.bat
-* Verify that the file path shown in the text field is correct and Select 'Run Query'
-* 
+* Using the dropdown select the **Query Name** for the .sql file you wish to excecute.
+* If desired modify the **Output File Name**.
+* Select **Run Query**
+* When finished use **File>Exit** to close the program
+  
 ## Notes
 * It is recommended that you use PyInstaller to generate an executable version of LDliteSingleSelect.py to run instead 
 of running it through LDliteSingleSelect.bat
+* See https://github.com/5-C-Folio/LDlite-Queries for a collection of pre-created .sql files
 
 ## Contributors
 
@@ -44,6 +49,10 @@ of running it through LDliteSingleSelect.bat
 
 * 0.1
     * Initial Release
+* 1.0
+    * Full Release
+    * Removed **query_file** parameter from the config file in favor of checking for query options in the folder specified by **query_filepath** simplifying the process of adding new queries and removing the need for additional config files.
+    * Added **output_filepath** parameter to config
     
 ## Known Issues
 * 

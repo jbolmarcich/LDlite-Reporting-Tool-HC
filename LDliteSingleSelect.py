@@ -21,6 +21,8 @@ class Querier:
         host = config["host"]
         password = config["password"]
         port = config["port"]
+        self.query_filepath = config["query_filepath"]
+        self.output_filepath = config["output_filepath"]
         self.query_name = ''
 
         try:
@@ -33,7 +35,7 @@ class Querier:
     def selectQuery(self, queryName):
         self.query_name = queryName
         try:
-            with open(f"Queries/{self.query_name}", "r") as q:
+            with open(f"{self.query_filepath}/{self.query_name}", "r") as q:
                 query = ""
                 for line in q:
                     query += line
@@ -53,7 +55,7 @@ class Querier:
     def saveResults(self, outfile_name):
         print("Saving Query Results...")
         try:
-            with open(f"Output_Files/{outfile_name}", 'w', encoding="utf-8") as out:
+            with open(f"{self.output_filepath}/{outfile_name}", 'w', encoding="utf-8") as out:
                 for column in self.cursor.description:
                     out.write(column[0]+',')
                 out.write('\n')
@@ -95,16 +97,23 @@ class ParameterMenu:
     def __init__(self):
         self.act_menu = tk.Tk()
         self.act_menu.wm_title("LDPlite Querier - Actions Menu")
-        self.act_menu.columnconfigure([0, 1, 2], minsize=150)
-        self.act_menu.rowconfigure([0, 1, 2, 3, 4, 5], minsize=10)
+        self.act_menu.columnconfigure([0, 1, 2, 3], minsize=20, pad=10)
+        self.act_menu.rowconfigure([0, 1, 2, 3, 4, 5], minsize=10, pad=10)
 
+        # General Title
+        self.title = tk.Label(master=self.act_menu, text="Select a query and input a file name.", font='TkDefaultFont 12 bold')
+        self.title.grid(row=0, column=0, columnspan=3)
+        
         # Selected Query Label
-        self.query_desc = tk.Label(master=self.act_menu, text="Select a Query: ", font='TkDefaultFont 10 bold')
-        self.query_desc.grid(row=1, column=0, columnspan=2)
+        self.query_desc = tk.Label(master=self.act_menu, text="Query Name: ", font='TkDefaultFont 10')
+        self.query_desc.grid(row=1, column=0)
 
         # Query Select Dropdown
-        options = os.listdir("./Queries")
-        self.config_input_options = ttk.Combobox(self.act_menu, value=options)
+        options = []
+        for file in os.listdir("./Queries"):
+            if file.endswith('.sql'):
+                options.append(file)
+        self.config_input_options = ttk.Combobox(self.act_menu, value=options, width=45)
         self.config_input_options.bind("<<ComboboxSelected>>", self.selected)
         self.config_input_options.grid(row=1, column=1, columnspan=2)
 
@@ -114,13 +123,13 @@ class ParameterMenu:
 
         # Output File Name Field
         # Defaults to the name of the query file
-        self.file_prompt = tk.Entry(master=self.act_menu, font='TkDefaultFont 10')
+        self.file_prompt = tk.Entry(master=self.act_menu, font='TkDefaultFont 10', width=41)
         self.file_prompt.insert(0, querier.query_name)
-        self.file_prompt.grid(row=3, column=1, columnspan=1)
+        self.file_prompt.grid(row=3, column=1, columnspan=2)
 
         # Run Query Button
         self.run = tk.Button(master=self.act_menu, text="Run Query", command=self.run_query, font='TkDefaultFont 10')
-        self.run.grid(row=3, column=2, columnspan=1)
+        self.run.grid(row=4, column=1, columnspan=1)
 
         # Menu Bar
         # File>Exit and File>Reconfigure
@@ -139,7 +148,7 @@ class ParameterMenu:
             print(e)
             PopupWindow(e)
         self.file_prompt.delete(0,len(self.file_prompt.get()))
-        self.file_prompt.insert(0, querier.query_name)
+        self.file_prompt.insert(0, querier.query_name[:-4]+'.csv')
 
     def run_query(self):
         file = self.file_prompt.get()
