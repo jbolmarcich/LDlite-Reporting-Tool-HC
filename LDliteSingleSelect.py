@@ -61,14 +61,14 @@ class Querier:
         try:
             with open(f"{self.output_filepath}/{outfile_name}", 'w', encoding="utf-8") as out:
                 for column in self.cursor.description:
-                    out.write(column[0]+',')
+                    out.write(column[0]+'\t ')
                 out.write('\n')
                 for line in self.cursor.fetchall(): 
                     newline = ""
                     for item in line:
                         if newline != "":
-                            newline += ", "
-                        newline += str(item).replace(',',' ')
+                            newline += "\t "
+                        newline += str(item)
                     out.write((newline+'\n').replace('\'', ''))
         except Exception as e:
             raise e
@@ -157,7 +157,7 @@ class ParameterMenu:
             print(e)
             PopupWindow(e)
         self.file_prompt.delete(0,len(self.file_prompt.get()))
-        self.file_prompt.insert(0, querier.query_name[:-4]+'.csv')
+        self.file_prompt.insert(0, querier.query_name[:-4]+'.tsv')
 
     def run_query(self):
         file = self.file_prompt.get()
