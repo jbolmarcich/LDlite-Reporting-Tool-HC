@@ -1,6 +1,7 @@
-config.json
 .idea
-*.sql
-Output_Files
 LDlite-Single-Select.code-workspace
+*.sql
+config.json
+Output_Files
 Queries
+Logs

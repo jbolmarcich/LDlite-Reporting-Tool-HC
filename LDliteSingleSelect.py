@@ -5,8 +5,9 @@ from tkinter import ttk
 import json
 import sys
 import os
+from datetime import datetime
 
-
+# Object for executing queries
 class Querier:
     def __init__(self, config_name):
         print("Initializing Querier...")
@@ -23,6 +24,7 @@ class Querier:
         port = config["port"]
         self.query_filepath = config["query_filepath"]
         self.output_filepath = config["output_filepath"]
+        self.log_file_output_filepath = config["log_file_output_filepath"]
         self.query_name = ''
 
         try:
@@ -30,9 +32,10 @@ class Querier:
             self.cursor = self.connection.cursor()
         except Exception as e:
             raise e
-        print("Querier Initialized Successfully.")
+        print("Querier Initialized Successfully.\n")
 
     def selectQuery(self, queryName):
+        print(f"Loading query: \"{queryName}\"...")
         self.query_name = queryName
         try:
             with open(f"{self.query_filepath}/{self.query_name}", "r") as q:
@@ -42,6 +45,7 @@ class Querier:
                 self.query = query
         except FileNotFoundError:
             raise FileNotFoundError(f"Query File:\n{self.query_name}\nnot found")
+        print(f"Query: \"{queryName}\" Loaded.\n")
 
     def runQuery(self):
         print("Excecuting Query...")
@@ -49,7 +53,7 @@ class Querier:
             self.cursor.execute(self.query)
         except Exception as e:
             raise e
-        print("Query Excecuted Successfully.")
+        print("Query Excecuted Successfully.\n")
         return 0
 
     def saveResults(self, outfile_name):
@@ -68,7 +72,7 @@ class Querier:
                     out.write((newline+'\n').replace('\'', ''))
         except Exception as e:
             raise e
-        print("Query Results Saved Sucessfully.")
+        print(f"Query Results Saved Sucessfully as \"{outfile_name}.\"\n")
 
 
 # Popup Windows to give alert notices
@@ -90,11 +94,12 @@ class PopupWindow:
     def close(self):
         self.popup.destroy()
 
-# Provides query name
+# Allows query selection
 # Includes buttons to open the query display and to run the query
 # File Menu includes an option to reselect config and one to exit
 class ParameterMenu:
     def __init__(self):
+        print("Initializing Action Menu...")
         self.act_menu = tk.Tk()
         self.act_menu.wm_title("LDPlite Querier - Actions Menu")
         self.act_menu.columnconfigure([0, 1, 2, 3], minsize=20, pad=10)
@@ -139,9 +144,13 @@ class ParameterMenu:
         self.main_menu_bar.add_cascade(label="File", menu=self.file_menu)
         self.act_menu.config(menu=self.main_menu_bar)
 
+        print("Action Menu Initialized.\n")
+
         self.act_menu.mainloop()
+        
 
     def selected(self, *args):
+        print(f"Query: {self.config_input_options.get()} selected.")
         try:
             querier.selectQuery(self.config_input_options.get())
         except Exception as e:
@@ -161,16 +170,39 @@ class ParameterMenu:
             return
         PopupWindow(f"Query Results Saved as:\n{file}")
 
+def generateLog(filepath):
+    start = datetime.now()
+    logfile = f"{filepath}/{start.year}-{start.month}-{start.day}--{start.hour}-{start.minute}-{start.second}.log"
+    print("Saving Log to: " + logfile)
+    sys.stdout = open(logfile, "w")
+    print("Log Start time: " + str(start) + "\n")
+    return start
+
 def launch():
     global querier
     global configName
     configName = "config.json"
+    try:
+        with open(configName, 'r') as c:
+            config = json.load(c)
+            log = config["generate_log"]    
+            log_location = config["log_file_output_filepath"]
+        if log:
+            generateLog(log_location)
+        else:
+            print("Logging Disabled")
+    except Exception as e:
+        print(e)
+        PopupWindow(e)
+        return
+
     try:
         querier = Querier(configName)
     except Exception as e:
         print(e)
         PopupWindow(e)
         return
+    
     ParameterMenu()
 
 

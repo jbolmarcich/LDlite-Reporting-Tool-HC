@@ -11,6 +11,7 @@ An Interface for running simple sql queries without a SQL IDE
 * sys
 * psycopg2
 * os
+* datetime
 
 ## Optional Requirements
 * pyinstaller
@@ -25,9 +26,11 @@ An Interface for running simple sql queries without a SQL IDE
     "host": " ",\
     "password": " ",\
     "query_filepath" : " ",\
-    "output_filepath" : " "\
+    "output_filepath" : " ",\
+    "generate_log": [Boolean],\
+    "log_file_output_filepath": " "\
 }
-* **query_filepath** and **output_filepath** should point to existing folders that you have read/write permissons for.
+* **query_filepath,**  **output_filepath,** and **log_file_output_filepath** should point to existing folders that you have read/write permissons for.
 * Run the program either with an .exe created with PyInstaller or by running LDliteSingleSelect.bat
 * Using the dropdown select the **Query Name** for the .sql file you wish to excecute.
 * If desired modify the **Output File Name**.
