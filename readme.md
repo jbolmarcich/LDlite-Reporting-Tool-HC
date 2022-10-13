@@ -1,4 +1,4 @@
-# FOLIO Voucher Export
+# LDlite Single Select
 
 An Interface for running simple sql queries without a SQL IDE
 
