@@ -17,8 +17,9 @@ An Interface for running simple sql queries without a SQL IDE
 * pyinstaller
   
 
-## Instructions
+## __Instructions:__
 
+### Setup:
 * Create json config file in the following format:
 >{\
     "dbname": " ",\
@@ -30,16 +31,25 @@ An Interface for running simple sql queries without a SQL IDE
     "generate_log": [Boolean],\
     "log_file_output_filepath": " "\
 }
+
 * **query_filepath,**  **output_filepath,** and **log_file_output_filepath** should point to existing folders that you have read/write permissons for.
-* Run the program either with an .exe created with PyInstaller or by running LDliteSingleSelect.bat
+  
+* To generate an excecutable you will need pyinstaller installed. Run **generate_excecutable.bat**. After running you should have an excecutable called **LDliteSingleSelect.exe**
+### Usage:
+* Run the program either by launching **LDliteSingleSelect.exe**, running **LDliteSingleSelect.bat**, or by running **LDliteSingleSelect.py** through the command line.
+  
 * Using the dropdown select the **Query Name** for the .sql file you wish to excecute.
+  
 * If desired modify the **Output File Name**.
+  
 * Select **Run Query**
+  
 * When finished use **File>Exit** to close the program
   
 ## Notes
 * It is recommended that you use PyInstaller to generate an executable version of LDliteSingleSelect.py to run instead 
 of running it through LDliteSingleSelect.bat
+
 * See https://github.com/5-C-Folio/LDlite-Queries for a collection of pre-created .sql files
 
 ## Contributors
