@@ -20,6 +20,7 @@ An Interface for running simple sql queries without a SQL IDE
 ## __Instructions:__
 
 ### Setup:
+
 * Create json config file in the following format:
 >{\
     "dbname": " ",\
@@ -32,10 +33,14 @@ An Interface for running simple sql queries without a SQL IDE
     "log_file_output_filepath": " "\
 }
 
-* **query_filepath,**  **output_filepath,** and **log_file_output_filepath** should point to existing folders that you have read/write permissons for.
+* **query_filepath,**  **output_filepath,** and **log_file_output_filepath** will be created based on config information in runtime if they do not exist.
+
+* Place any .sql files you wish to run in your **query_filepath** directory.   
   
-* To generate an excecutable you only need Python 3.10+ installed. Run **generate_excecutable.bat**. After running you should have an excecutable called **LDliteSingleSelect.exe**
+* If you need to generate an updated excecutable you only need Python 3.10+ installed. Run **generate_excecutable.bat**. After running, **LDliteSingleSelect.exe** will be up to date. This updates the executable from **LDliteSingleSelect.py** <u>**NOT**</u> from GitHub
+
 ### Usage:
+
 * Run the program either by launching **LDliteSingleSelect.exe**, running **LDliteSingleSelect.bat**, or by running **LDliteSingleSelect.py** through the command line.
   
 * Using the dropdown select the **Query Name** for the .sql file you wish to excecute.
