@@ -5,7 +5,7 @@ An Interface for running simple sql queries without a SQL IDE
 ## Requirements
 
 
-* Python 3.x
+* Python 3.10+
 * json
 * tkinter
 * sys
@@ -34,7 +34,7 @@ An Interface for running simple sql queries without a SQL IDE
 
 * **query_filepath,**  **output_filepath,** and **log_file_output_filepath** should point to existing folders that you have read/write permissons for.
   
-* To generate an excecutable you will need pyinstaller installed. Run **generate_excecutable.bat**. After running you should have an excecutable called **LDliteSingleSelect.exe**
+* To generate an excecutable you only need Python 3.10+ installed. Run **generate_excecutable.bat**. After running you should have an excecutable called **LDliteSingleSelect.exe**
 ### Usage:
 * Run the program either by launching **LDliteSingleSelect.exe**, running **LDliteSingleSelect.bat**, or by running **LDliteSingleSelect.py** through the command line.
   
