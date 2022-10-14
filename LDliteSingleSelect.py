@@ -35,7 +35,7 @@ class Querier:
         print("Querier Initialized Successfully.\n")
 
     def selectQuery(self, queryName):
-        print(f"Loading query: \"{queryName}\"...")
+        print(f"Loading query \"{queryName}\"...")
         self.query_name = queryName
         try:
             with open(f"{self.query_filepath}/{self.query_name}", "r") as q:
@@ -45,7 +45,7 @@ class Querier:
                 self.query = query
         except FileNotFoundError:
             raise FileNotFoundError(f"Query File:\n{self.query_name}\nnot found")
-        print(f"Query: \"{queryName}\" Loaded.\n")
+        print(f"Query \"{queryName}\" Loaded.\n")
 
     def runQuery(self):
         print("Excecuting Query...")
@@ -150,7 +150,7 @@ class ParameterMenu:
         
 
     def selected(self, *args):
-        print(f"Query: {self.config_input_options.get()} selected.")
+        print(f"Query \"{self.config_input_options.get()}\" selected.")
         try:
             querier.selectQuery(self.config_input_options.get())
         except Exception as e:
@@ -188,10 +188,27 @@ def launch():
             config = json.load(c)
             log = config["generate_log"]    
             log_location = config["log_file_output_filepath"]
+            queries = config["query_filepath"]
+            output = config["output_filepath"]
         if log:
+            try:
+                os.mkdir(log_location)
+                print(f"Directory for logs \"{log_location}\" created\n")
+            except Exception as e:
+                print("Existing log directory found\n")
             generateLog(log_location)
         else:
-            print("Logging Disabled")
+            print("\nLogging Disabled\n")
+        try:            
+            os.mkdir(queries)
+            print(f"Directory for queries \"{queries}\" created\n")
+        except Exception as e:
+            print("Existing query directory found\n")
+        try:
+            os.mkdir(output)
+            print(f"Directory for outputted files \"{output}\" created\n")
+        except Exception as e:
+            print("Existing output directory found\n")
     except Exception as e:
         print(e)
         PopupWindow(e)
