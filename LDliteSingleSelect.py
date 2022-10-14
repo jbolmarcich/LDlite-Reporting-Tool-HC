@@ -157,7 +157,8 @@ class ParameterMenu:
             print(e)
             PopupWindow(e)
         self.file_prompt.delete(0,len(self.file_prompt.get()))
-        self.file_prompt.insert(0, querier.query_name[:-4]+'.tsv')
+        today = datetime.today()
+        self.file_prompt.insert(0, f'{querier.query_name[:-4]}--{today.day}-{today.month}-{today.year}--{today.hour}-{today.minute}-{today.second}.tsv')
 
     def run_query(self):
         file = self.file_prompt.get()
