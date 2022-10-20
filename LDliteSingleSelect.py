@@ -6,6 +6,7 @@ import json
 import sys
 import os
 from datetime import datetime
+import re
 
 # Object for executing queries
 class Querier:
@@ -43,16 +44,27 @@ class Querier:
                 for line in q:
                     query += line
                 self.query = query
+                paramlist = re.findall('\{.*?\}', query)
+                for i, item in enumerate(paramlist):
+                    item = item [1:-1]
+                    paramlist[i] = item
         except FileNotFoundError:
             raise FileNotFoundError(f"Query File:\n{self.query_name}\nnot found")
         print(f"Query \"{queryName}\" Loaded.\n")
+        return paramlist
 
-    def runQuery(self):
+    def runQuery(self, param_list):
         print("Excecuting Query...")
-        try:
-            self.cursor.execute(self.query)
-        except Exception as e:
-            raise e
+        paramed_query = self.query
+        for param in param_list:
+            paramName = '{' + param['label'].cget('text') + '}'
+            print(paramName)
+            paramValue = str(param['entry'].get())
+            paramed_query = paramed_query.replace(paramName, paramValue)
+        #try:
+        self.cursor.execute(paramed_query)
+        #except Exception as e:
+         #   raise e
         print("Query Excecuted Successfully.\n")
         return 0
 
@@ -97,7 +109,7 @@ class PopupWindow:
 # Allows query selection
 # Includes buttons to open the query display and to run the query
 # File Menu includes an option to reselect config and one to exit
-class ParameterMenu:
+class ActionMenu:
     def __init__(self):
         print("Initializing Action Menu...")
         self.act_menu = tk.Tk()
@@ -107,11 +119,14 @@ class ParameterMenu:
 
         # General Title
         self.title = tk.Label(master=self.act_menu, text="Select a query and input a file name.", font='TkDefaultFont 12 bold')
-        self.title.grid(row=0, column=0, columnspan=3)
+        #self.title.grid(row=0, column=0, columnspan=3)
+        self.title.pack(fill='x', side='top')
         
+
         # Selected Query Label
         self.query_desc = tk.Label(master=self.act_menu, text="Query Name: ", font='TkDefaultFont 10')
-        self.query_desc.grid(row=1, column=0)
+        #self.query_desc.grid(row=1, column=0)
+        self.query_desc.pack(side='top')
 
         # Query Select Dropdown
         options = []
@@ -120,21 +135,25 @@ class ParameterMenu:
                 options.append(file)
         self.config_input_options = ttk.Combobox(self.act_menu, value=options, width=45)
         self.config_input_options.bind("<<ComboboxSelected>>", self.selected)
-        self.config_input_options.grid(row=1, column=1, columnspan=2)
+        #self.config_input_options.grid(row=1, column=1, columnspan=2)
+        self.config_input_options.pack(fill='x', side='top', padx=15)
 
         # Output File Name Prompt
         self.file_desc = tk.Label(master=self.act_menu, text="Output File Name:", font='TkDefaultFont 10')
-        self.file_desc.grid(row=3, column=0, columnspan=1)
+        #self.file_desc.grid(row=3, column=0, columnspan=1)
+        self.file_desc.pack(side='top')
 
         # Output File Name Field
         # Defaults to the name of the query file
         self.file_prompt = tk.Entry(master=self.act_menu, font='TkDefaultFont 10', width=41)
         self.file_prompt.insert(0, querier.query_name)
-        self.file_prompt.grid(row=3, column=1, columnspan=2)
+        #self.file_prompt.grid(row=3, column=1, columnspan=2)
+        self.file_prompt.pack(side='top', fill='x', padx=15)
 
         # Run Query Button
         self.run = tk.Button(master=self.act_menu, text="Run Query", command=self.run_query, font='TkDefaultFont 10')
-        self.run.grid(row=4, column=1, columnspan=1)
+        #self.run.grid(row=4, column=1, columnspan=1)
+        self.run.pack(side='bottom')
 
         # Menu Bar
         # File>Exit and File>Reconfigure
@@ -144,6 +163,14 @@ class ParameterMenu:
         self.main_menu_bar.add_cascade(label="File", menu=self.file_menu)
         self.act_menu.config(menu=self.main_menu_bar)
 
+        # Param Header Label
+        self.param_header = tk.Label(master=self.act_menu, text="Input Query Parameters:", font='TkDefaultFont 10 bold')
+        self.param_active = False
+
+        # List to hold parameter objects
+        self.param_objects = []
+
+
         print("Action Menu Initialized.\n")
 
         self.act_menu.mainloop()
@@ -151,19 +178,42 @@ class ParameterMenu:
 
     def selected(self, *args):
         print(f"Query \"{self.config_input_options.get()}\" selected.")
+        if self.param_active:
+            self.param_header.pack_forget()
+            self.param_active = False
         try:
-            querier.selectQuery(self.config_input_options.get())
+            for item in self.param_objects:
+                item['label'].destroy()
+                item['entry'].destroy()
+        except Exception as e:
+            PopupWindow(e)        
+            print(e)
+        self.param_objects.clear()
+        try:
+            params = querier.selectQuery(self.config_input_options.get())
         except Exception as e:
             print(e)
             PopupWindow(e)
         self.file_prompt.delete(0,len(self.file_prompt.get()))
         today = datetime.today()
         self.file_prompt.insert(0, f'{querier.query_name[:-4]}--{today.day}-{today.month}-{today.year}--{today.hour}-{today.minute}-{today.second}.tsv')
+        if params != []:
+            self.param_header.pack()
+            self.param_active = True
+        for i, param in enumerate(params):
+            label = tk.Label(master=self.act_menu, text=param, font='TkDefaultFont 10')
+            entry = tk.Entry(master=self.act_menu, font='TkDefaultFont 10', width=41)
+            self.param_objects.append({"label": label,"entry": entry})
+            self.param_objects[i]["label"].pack(side='top')
+            self.param_objects[i]["entry"].pack(side='top')
 
     def run_query(self):
+        for param in self.param_objects:
+            if param['entry'].get() == '':
+                PopupWindow('Parameters must not be empty.')
         file = self.file_prompt.get()
         try:
-            querier.runQuery()
+            querier.runQuery(self.param_objects)
             querier.saveResults(file)
         except Exception as e:
             print(e)
@@ -221,7 +271,7 @@ def launch():
         PopupWindow(e)
         return
     
-    ParameterMenu()
+    ActionMenu()
 
 
 if __name__ == "__main__":
