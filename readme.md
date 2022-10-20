@@ -46,6 +46,8 @@ An Interface for running simple sql queries without a SQL IDE
 * Using the dropdown select the **Query Name** for the .sql file you wish to excecute.
   
 * If desired modify the **Output File Name**.
+
+* Enter values for any parameters the query requires. 
   
 * Select **Run Query**
   
@@ -56,6 +58,8 @@ An Interface for running simple sql queries without a SQL IDE
 of running it through LDliteSingleSelect.bat
 
 * See https://github.com/5-C-Folio/LDlite-Queries for a collection of pre-created .sql files
+* To create parameters to populate as options in the menu place any prompt text within curly brackets in the value of the desired parameter like so:
+` '{Start Date (YYYY-MM-DD)}':: VARCHAR AS start_date, --Change this value to the earliest date you want to see `
 
 ## Contributors
 
