@@ -59,7 +59,7 @@ of running it through LDliteSingleSelect.bat
 
 * See https://github.com/5-C-Folio/LDlite-Queries for a collection of pre-created .sql files
 * To create parameters to populate as options in the menu place any prompt text within curly brackets in the value of the desired parameter like so:
-` '{Start Date (YYYY-MM-DD)}':: VARCHAR AS start_date, --Change this value to the earliest date you want to see `
+`'{Start Date (YYYY-MM-DD)}':: VARCHAR AS start_date`
 
 ## Contributors
 
