@@ -130,7 +130,7 @@ class ActionMenu:
 
         # Query Select Dropdown
         options = []
-        for file in os.listdir("./Queries"):
+        for file in os.listdir(f"./{queriesDir}"):
             if file.endswith('.sql'):
                 options.append(file)
         self.config_input_options = ttk.Combobox(self.act_menu, value=options, width=45)
@@ -232,13 +232,14 @@ def generateLog(filepath):
 def launch():
     global querier
     global configName
+    global queriesDir
     configName = "config.json"
     try:
         with open(configName, 'r') as c:
             config = json.load(c)
             log = config["generate_log"]    
             log_location = config["log_file_output_filepath"]
-            queries = config["query_filepath"]
+            queriesDir = config["query_filepath"]
             output = config["output_filepath"]
         if log:
             try:
