@@ -35,6 +35,12 @@ class Querier:
             raise e
         print("Querier Initialized Successfully.\n")
 
+    def rollbackTransaction(self):
+        try:
+            self.cursor.execute('ROLLBACK')
+        except Exception as e:
+            raise e
+
     def selectQuery(self, queryName):
         print(f"Loading query \"{queryName}\"...")
         self.query_name = queryName
@@ -217,6 +223,7 @@ class ActionMenu:
             querier.saveResults(file)
         except Exception as e:
             print(e)
+            querier.rollbackTransaction()
             PopupWindow(e)
             return
         PopupWindow(f"Query Results Saved as:\n{file}")
