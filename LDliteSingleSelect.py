@@ -258,8 +258,8 @@ def launch():
         else:
             print("\nLogging Disabled\n")
         try:            
-            os.mkdir(queries)
-            print(f"Directory for queries \"{queries}\" created\n")
+            os.mkdir(queriesDir)
+            print(f"Directory for queries \"{queriesDir}\" created\n")
         except Exception as e:
             print("Existing query directory found\n")
         try:
