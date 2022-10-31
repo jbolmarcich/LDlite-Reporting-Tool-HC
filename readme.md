@@ -21,6 +21,8 @@ An Interface for running simple sql queries without a SQL IDE
 
 ### Setup:
 
+Simplified installation and usage instructions can be found here: https://docs.google.com/document/d/1nGEkgKNdkKOrfOSI5eol9Vj2pLpjtTXabGmMVlcCztw/edit?usp=sharing
+
 * Create json config file in the following format:
 >{\
     "dbname": " ",\
