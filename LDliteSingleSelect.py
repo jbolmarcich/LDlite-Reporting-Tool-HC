@@ -78,8 +78,10 @@ class Querier:
         print("Saving Query Results...")
         try:
             with open(f"{self.output_filepath}/{outfile_name}", 'w', encoding="utf-8") as out:
-                for column in self.cursor.description:
-                    out.write(column[0]+'\t ')
+                for i, column in enumerate(self.cursor.description):
+                    out.write(column[0])
+                    if i != len(self.cursor.description)-1:
+                        out.write('\t')
                 out.write('\n')
                 for line in self.cursor.fetchall(): 
                     newline = ""
