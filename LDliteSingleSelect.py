@@ -87,7 +87,7 @@ class Querier:
                     newline = ""
                     for item in line:
                         if newline != "":
-                            newline += "\t "
+                            newline += "\t"
                         newline += str(item)
                     out.write((newline+'\n').replace('\'', ''))
         except Exception as e:
