@@ -1,3 +1,9 @@
+"""
+Copyright (C) 2022-2024  Amelia Sutton
+This software is distributed under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version. See the file "[COPYING](COPYING)" for more details.
+"""
 from msilib.schema import ComboBox
 import psycopg2 as postgres
 import tkinter as tk
