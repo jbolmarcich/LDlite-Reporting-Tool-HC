@@ -1,0 +1,11 @@
+{
+    "dbname": "ldplite",
+    "host": "reportingtest.ddns.umass.edu",
+    "port": "6991",	
+    "user": "ldplite",
+    "password": "saltldplite",
+    "query_filepath" : "Queries",
+    "output_filepath" : "Output_Files",
+    "generate_log": "false",
+    "log_file_output_filepath": "Logs"
+}

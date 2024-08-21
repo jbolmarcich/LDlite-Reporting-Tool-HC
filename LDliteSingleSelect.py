@@ -1,9 +1,3 @@
-"""
-Copyright (C) 2022-2024  Amelia Sutton
-This software is distributed under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version. See the file "[COPYING](COPYING)" for more details.
-"""
 from msilib.schema import ComboBox
 import psycopg2 as postgres
 import tkinter as tk
@@ -84,16 +78,14 @@ class Querier:
         print("Saving Query Results...")
         try:
             with open(f"{self.output_filepath}/{outfile_name}", 'w', encoding="utf-8") as out:
-                for i, column in enumerate(self.cursor.description):
-                    out.write(column[0])
-                    if i != len(self.cursor.description)-1:
-                        out.write('\t')
+                for column in self.cursor.description:
+                    out.write(column[0]+'\t ')
                 out.write('\n')
                 for line in self.cursor.fetchall(): 
                     newline = ""
                     for item in line:
                         if newline != "":
-                            newline += "\t"
+                            newline += "\t "
                         newline += str(item)
                     out.write((newline+'\n').replace('\'', ''))
         except Exception as e:
